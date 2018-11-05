@@ -29,24 +29,19 @@ class TestBinarySearchTree(unittest.TestCase):
         else:
             self.test_insert_Nonroot(newVal,self.root)
 
-         
-        
-  
     def test_insert_Nonroot(self,newVal,currentNode): # puts values in their proper order
-        
+    
         if currentNode.value > newVal: # checks if the current node is greater then the new value
-            if currentNode.left == None:
+            if currentNode.left == None: # adds to the left side first 
                 currentNode.left = BinarySearchTreeNode(newVal) #adds a new node to current's left
-                currentNode.left.parent = currentNode
             else:
                 self.test_insert_Nonroot(newVal,currentNode.left)# this goes to the next left value
         else:
             if currentNode.value < newVal: # checks to see if current Node is greater than the new val
                 if currentNode.right == None:
-                    currentNode.right = BinarySearchTreeNode(newVal)
-                    currentNode.right.parent = currentNode
+                    currentNode.right = BinarySearchTreeNode(newVal) 
                 else:
-                    self.test_insert_Nonroot(newVal,currentNode.right)
+                    self.test_insert_Nonroot(newVal,currentNode.right) 
         
     
     def inorderTrav(self,currentNode):#traverses 
