@@ -20,7 +20,7 @@ class TestBinarySearchTree(unittest.TestCase):
         print(bst.getVal())
         print("hello accessing function")
 
-    def test_insert_Root(self,newVal):
+    def test_insert_Call(self,newVal):
         self.NumberOfNodes = self.NumberOfNodes + 1
         print(self.root)
         if self.root == None:
@@ -28,18 +28,34 @@ class TestBinarySearchTree(unittest.TestCase):
             print(self.root.value)
         else:
             self.test_insert_Nonroot(newVal,self.root)
+    def print_parent(self,currentNode):
+        #print("Node "+ str(currentNode.value)+" has a parent of " +str(self.GetValue(currentNode.parent)))
+        pass   
+    def GetValue(self,currentNode):
+        if currentNode == None:
+            pass
+        else:
+            return currentNode.value
 
     def test_insert_Nonroot(self,newVal,currentNode): # puts values in their proper order
     
         if currentNode.value > newVal: # checks if the current node is greater then the new value
             if currentNode.left == None: # adds to the left side first 
-                currentNode.left = BinarySearchTreeNode(newVal) #adds a new node to current's left
+                a = BinarySearchTreeNode(newVal)
+                currentNode.left = a #adds a new node to current's left
+                a.parent = currentNode
+                self.print_parent(a)
+                
+                
             else:
-                self.test_insert_Nonroot(newVal,currentNode.left)# this goes to the next left value
+                self.test_insert_Nonroot(newVal,currentNode.left)# this recurses to the next left value
         else:
             if currentNode.value < newVal: # checks to see if current Node is greater than the new val
                 if currentNode.right == None:
-                    currentNode.right = BinarySearchTreeNode(newVal) 
+                    b = BinarySearchTreeNode(newVal)
+                    currentNode.right = b
+                    b.parent = currentNode
+                    self.print_parent(b)
                 else:
                     self.test_insert_Nonroot(newVal,currentNode.right) 
         
@@ -72,26 +88,21 @@ class TestBinarySearchTree(unittest.TestCase):
     def has_left(self,currentNode):
         if currentNode.left != None:
             return True
-
+        
     def has_right(self,currentNode):
         if currentNode.right !=None:
             return True
 
-    def getParent(self,currentNode):
-        if currentNode != None:
-            return self.parent
-
     def is_it_a_leaf(self,currentNode):
         if currentNode.left == None and currentNode.right == None:
             return True
-
+        else:
+            return False
     def get_node_left(self,currentNode):
         return currentNode.left.value
     
     def find(self,value,currentNode,Deleting=False):
         if currentNode.value == value:
-            if Deleting == False: # reuses the function for deletion 
-                print("Found "+ str(currentNode.value))
 
             return currentNode
         elif currentNode.value > value and self.has_left(currentNode):
@@ -107,14 +118,44 @@ class TestBinarySearchTree(unittest.TestCase):
             return None
         else:
             return self.find(SearchNumber,self.root,Deleting)
-    
-    def Deletion(self,SearchNumber,currentNode): # doesnt work
-        a = self.call_find(SearchNumber,True)
-        if a == self.is_it_a_leaf(currentNode):
-            print("this is a leaf")
+    def set_node_value(self,currentNode,newVal):
+        currentNode.value = newVal
+    def set_node_parent(self,currentNode,x):
+        currentNode.parent = x
+    def Get_Parent_Node(self,currentNode):
+        return currentNode.parent
+    def Get_Parent_Value(self,currentNode):
+        return self.Get_Parent_Node(currentNode).value
+
+    def set_node_left(self,currentNode,newVal):
+        currentNode.left = newVal
+    def set_node_right(self,currentNode,newVal):
+        currentNode.right = newVal
+    def child_is_left(self,currentNode):
+       # print(" nodes left is "+ str(self.Get_Parent_Value(currentNode).left))
+       pass
+
+    def Deletion(self,SearchNumber,currentNode): 
         
+        if self.is_it_a_leaf(currentNode):#looks for a leaf
+        
+            if self.GetValue(self.Get_Parent_Node(currentNode).left) != currentNode.value: # removes right leaf
            
-    def call_deletion(self,searchNumber): # doesnt work
+             self.set_node_right(self.Get_Parent_Node(currentNode),None) 
+             
+            if self.GetValue(self.Get_Parent_Node(currentNode).left) == currentNode.value:# removes left leaf
+            
+             self.set_node_left(self.Get_Parent_Node(currentNode),None) 
+        #........................... case 2 has 1 child
+        elif self.is_it_a_leaf(currentNode) == False:# doesnt work
+
+            if self.GetValue(currentNode.right) and currentNode.left == None:
+                print("has 1 right child")
+                Node_parent = currentNode.parent
+                Node_child = currentNode.right
+            if self.GetValue(currentNode.left) and currentNode.right == None:
+                print("has 1 left child")
+    def call_deletion(self,searchNumber): 
         return self.Deletion(searchNumber,self.call_find(searchNumber))
 
 
