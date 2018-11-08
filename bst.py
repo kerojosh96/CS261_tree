@@ -6,9 +6,7 @@ class BinarySearchTreeNode:
         self.left = left
         self.right = right
         self.parent = None
-    def getVal(self):
-        return self.value
-   
-
+    
+    
     
    
